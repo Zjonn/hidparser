@@ -1,0 +1,145 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f4f6f9;
+    color: #333;
+    font-size: 13px;
+}
+
+header {
+    background: #2c3e50;
+    color: white;
+    padding: 0.2rem;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Container */
+.container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0;
+    display: grid;
+    gap: 0.3rem;
+}
+
+/* Card style */
+.card {
+    background: white;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+/* Textarea */
+textarea {
+    width: 100%;
+    height: 30vh;
+    font-family: monospace;
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 1em;
+}
+
+.options-card .options-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Parse button - reduced by 1/3 */
+#parseBtn {
+    padding: 0.3rem 0.7rem;
+    border-radius: 6px;
+    border: none;
+    font-size: 1em;
+    min-width: 32px;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #3498db;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#parseBtn:hover {
+    background: #2980b9;
+}
+
+/* Gear button - reduced by 1/3 */
+#toggleOptions {
+    padding: 0.3rem 0.7rem;
+    border-radius: 6px;
+    border: none;
+    background: #ecf0f1;
+    cursor: pointer;
+    font-size: 1em;
+    min-width: 32px;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.options-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.options-content label {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9em;
+}
+
+.options-content input[type="text"] {
+    padding: 0.3rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-family: monospace;
+    font-size: 1em;
+}
+
+.hidden {
+    display: none;
+}
+
+pre {
+    background: #f0f3f7;
+    padding: 1rem;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.9em;
+    overflow-x: auto;
+    line-height: 1.4;
+}
+
+#settings {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+#settings img {
+    width: 24px;
+    height: 24px;
+}
+
+#parse {
+    padding: 0.3rem 0.7rem;
+    font-size: 1em;
+}
+
+#parse:hover {
+    background: #2980b9;
+}

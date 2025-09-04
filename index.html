@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HID Descriptor Parser</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>HID Report Descriptor Parser</h1>
+    </header>
+
+    <main class="container">
+        <!-- Input card -->
+        <section class="card">
+            <h2>Input</h2>
+            <textarea id="descriptorInput" placeholder="Paste HID Report Descriptor (hex)..."></textarea>
+        </section>
+
+        <!-- Options card -->
+        <section class="card options-card">
+            <div class="options-header" style="display: flex; align-items: center; gap: 8px;">
+                <button id="parseBtn">Parse</button>
+                <button id="toggleOptions">⚙️</button>
+            </div>
+            <div id="optionsContent" class="options-content hidden">
+                <label>
+                    Separator:
+                    <input type="text" id="separator" value=", " maxlength="2">
+                </label>
+                <label>
+                    Prefix:
+                    <input type="text" id="prefix" value="0x" maxlength="4">
+                </label>
+                <label>
+                    Comment symbol:
+                    <input type="text" id="commentSymbol" value="//" maxlength="4">
+                </label>
+            </div>
+        </section>
+
+        <!-- Output card -->
+        <section class="card">
+            <h2>Output</h2>
+            <pre id="output"></pre>
+        </section>
+    </main>
+
+    <script>
+        const toggleBtn = document.getElementById('toggleOptions');
+        const optionsContent = document.getElementById('optionsContent');
+
+        toggleBtn.addEventListener('click', () => {
+            optionsContent.classList.toggle('hidden');
+        });
+    </script>
+    <script type="module" src="parser.js"></script>
+</body>
+</html>
