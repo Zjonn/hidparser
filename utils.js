@@ -7,11 +7,9 @@ export function joinHex(tag, data, opts, nBytes) {
     const sep = opts.separator || " ";
     const result = [];
     
-    // Tag - zawsze 1 bajt
     if(tag !== null)
         result.push(toHex(tag & 0xFF, opts));
     
-    // Data - podziel na bajty (little-endian)
     for (let i = 0; i < nBytes; i++) {
         const byte = (data >>> (i * 8)) & 0xFF;
         result.push(toHex(byte, opts));
