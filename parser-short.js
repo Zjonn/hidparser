@@ -2988,15 +2988,15 @@ function getUsage(usagePage, usageId) {
 function handleParts(byte, is_input) {
     let res = (byte & 0x01) ? "Cons" : "Data";
     res += "," + ((byte & 0x02) ? "Arr" : "Var");
-    res += "," + (byte & 0x04) ? "Abs" : "Rel";
-    res += "," + (byte & 0x08) ? "NWrap" : "Wrap";
-    res += "," + (byte & 0x10) ? "Lin" : "NLin";
-    res += "," + (byte & 0x20) ? "PrefState" : "NPrefState";
-    res += "," + (byte & 0x40) ? "NNull" : "Null";
+    res += "," + ((byte & 0x04) ? "Abs" : "Rel");
+    res += "," + ((byte & 0x08) ? "NWrap" : "Wrap");
+    res += "," + ((byte & 0x10) ? "Lin" : "NLin");
+    res += "," + ((byte & 0x20) ? "PrefState" : "NPrefState");
+    res += "," + ((byte & 0x40) ? "NNull" : "Null");
     if (!is_input) {
-        res += "," + (byte & 0x40) ? "NVol" : "Vol";
+        res += "," + ((byte & 0x40) ? "NVol" : "Vol");
     }
-    res += "," + (byte & 0x80) ? "BitField" : "BuffBytes";
+    res += "," + ((byte & 0x80) ? "BitField" : "BuffBytes");
 
     return res;
 }
