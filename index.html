@@ -14,7 +14,24 @@
         <!-- Input card -->
         <section class="card">
             <h2>Input</h2>
-            <textarea id="descriptorInput" placeholder="Paste HID Report Descriptor (hex)..."></textarea>
+            <textarea id="descriptorInput" 
+    placeholder="Paste HID Report Descriptor bytes (hex format):
+
+Examples:
+- Basic mouse:
+05 01 09 02 A1 01  // Usage Page (Generic Desktop), Usage (Mouse)
+09 01 A1 00        // Usage (Pointer), Collection (Physical)
+05 09 19 01 29 03  // Usage Page (Button), Usage Min/Max (1,3)
+15 00 25 01        // Logical Min/Max (0,1)
+95 03 75 01 81 02  // Report Count(3), Size(1), Input(Data,Var,Abs)
+95 01 75 05 81 03  // Report Count(1), Size(5), Input(Const)
+...                // (rest omitted for brevity)
+
+Format:
+- Hex bytes (00-FF), space separated
+- Comments (ignored): // single line, /* multi-line */, # shell-style
+- Case insensitive (05 or 0x05 or 0X05)
+- Leading 0x is optional"></textarea>
         </section>
 
         <!-- Options card -->
