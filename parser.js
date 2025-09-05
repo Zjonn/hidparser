@@ -51,8 +51,6 @@ document.getElementById("parseBtn").addEventListener("click", () => {
     input = stripComments(input);
 
     const bytes = input.split(/[\s,]+/).map(b => parseInt(b, 16)).filter(n => !isNaN(n));
-    console.log("Parsed bytes:", bytes);
-
     const opts = {
         separator: document.getElementById("separator").value || ",",
         prefix: document.getElementById("prefix").value || "0x",

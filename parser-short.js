@@ -177,7 +177,7 @@ function getUsage(usagePage, usageId) {
                     return "Reserved"
             };
         case 0x02:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "Flight Simulation Device";
                 case 0x02: return "Automobile Simulation Device";
@@ -234,7 +234,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x03:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "Belt";
                 case 0x02: return "Body Suit";
@@ -251,7 +251,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x04:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "Baseball Bat";
                 case 0x02: return "Golf Club";
@@ -290,7 +290,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x05:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "3D Game Controller";
                 case 0x02: return "Pinball Device";
@@ -324,7 +324,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x06:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "Background Nonuser Controls";
                 case 0x20: return "Battery Strength";
@@ -353,7 +353,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x07:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x01: return "Keyboard ErrorRollOver";
                 case 0x02: return "Keyboard POSTFail";
                 case 0x03: return "Keyboard ErrorUndefined";
@@ -575,7 +575,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x08:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "Num Lock";
                 case 0x02: return "Caps Lock";
@@ -676,25 +676,25 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x09:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "No Button Pressed";
                 case 0x01: return "Button 1 (primary trigger)";
                 case 0x02: return "Button 2 (secondary)";
                 case 0x03: return "Button 3 (tertiary)";
                 case 0x04: return "Button 4 See Note";
-                default: return `Button ${usagePage}`;
+                default: return `Button ${usageId}`;
             }
         case 0x0A:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Reserved";
                 case 0x01: return "Instance 1";
                 case 0x02: return "Instance 2";
                 case 0x03: return "Instance 3";
                 case 0x04: return "Instance 4";
-                default: return `Instance ${usagePage}`;
+                default: return `Instance ${usageId}`;
             }
         case 0x0B:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "Phone";
                 case 0x02: return "Answering Machine";
@@ -798,7 +798,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x0C:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "Consumer Control";
                 case 0x02: return "Numeric Key Pad";
@@ -1253,7 +1253,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x0D:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "Digitizer";
                 case 0x02: return "Pen";
@@ -1366,7 +1366,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x0E:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "Simple Haptic Controller";
                 case 0x10: return "Waveform List";
@@ -1400,7 +1400,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x0F:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "Physical Input Device";
                 case 0x20: return "Normal";
@@ -1511,7 +1511,7 @@ function getUsage(usagePage, usageId) {
             }
         // case 0x10: break;
         case 0x11:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "SocControl";
                 case 0x02: return "FirmwareTransfer";
@@ -1526,7 +1526,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x12:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "Eye Tracker";
                 case 0x02: return "Head Tracker";
@@ -1565,7 +1565,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x14:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "Alphanumeric Display";
                 case 0x02: return "Auxiliary Display";
@@ -1645,7 +1645,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x20:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "Sensor";
                 case 0x10: return "Biometric";
@@ -2306,7 +2306,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x40:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "Medical Ultrasound";
                 case 0x20: return "VCR Acquisition";
@@ -2340,7 +2340,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x41:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "Braille Display";
                 case 0x02: return "Braille Row";
@@ -2388,7 +2388,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x59:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "LampArray";
                 case 0x02: return "LampArrayAttributesReport";
@@ -2426,7 +2426,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x80:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "Monitor Control";
                 case 0x02: return "EDID Information";
@@ -2435,12 +2435,12 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x81:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Reserved";
-                default: return `Enum ${usagePage}`;
+                default: return `Enum ${usageId}`;
             }
         case 0x82:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "Degauss";
                 case 0x10: return "Brightness";
@@ -2490,7 +2490,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x84:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "iName";
                 case 0x02: return "Present Status";
@@ -2572,7 +2572,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x85:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "Smart Battery Battery Mode";
                 case 0x02: return "Smart Battery Battery Status";
@@ -2668,7 +2668,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x8C:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "Barcode Badge Reader";
                 case 0x02: return "Barcode Scanner";
@@ -2867,7 +2867,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x8D:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "Scales";
                 case 0x20: return "Scale Device";
@@ -2918,7 +2918,7 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x8E:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "MSR Device Read-Only";
                 case 0x11: return "Track 1 Length";
@@ -2933,14 +2933,14 @@ function getUsage(usagePage, usageId) {
                 default: return "Reserved";
             }
         case 0x90:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x20: return "Camera Auto-focus";
                 case 0x21: return "Camera Shutter";
                 default: return "Reserved";
             }
         case 0x91:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "General Purpose IO Card";
                 case 0x02: return "Coin Door";
@@ -2973,7 +2973,7 @@ function getUsage(usagePage, usageId) {
             }
         case 0x92: break;
         case 0xF1D0:
-            switch (usagePage) {
+            switch (usageId) {
                 case 0x00: return "Undefined";
                 case 0x01: return "U2F Authenticator Device";
                 case 0x20: return "Input Report Data";
@@ -3003,7 +3003,6 @@ function handleParts(byte, is_input) {
 
 function handleMainItem(bTag, bSize, bytes, i, opts, indent) {
     const b = bytes[i];
-    console.log("Main Item:", { bSize, bTag });
     switch (bTag) {
         case 0xA: { // Collection (1-byte arg)
             if (bSize !== 1) {
