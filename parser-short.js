@@ -3000,7 +3000,7 @@ function handleParts(byte, is_input) {
         parts.push((byte & 0x80) ? "Volatile" : "Non Volatile");
     }
 
-    parts.push((byte & 0x010) ? "Buffered Bytes" : "Bit Field");
+    parts.push((byte & 0x100) ? "Buffered Bytes" : "Bit Field");
 
     return parts.join(",");
 }
