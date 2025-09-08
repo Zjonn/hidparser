@@ -18,7 +18,7 @@ export function joinHex(tag, data, opts, nBytes) {
     return result.join(sep);
 }
 
-export function readIntLE(bytes, offset, n) {
+export function readIntLE(bytes, offset, n, signed = true) {
     if (!n || n <= 0) return undefined;
 
     let v = 0;
@@ -28,12 +28,15 @@ export function readIntLE(bytes, offset, n) {
         v |= (b & 0xff) << (8 * i);
     }
 
-    // signed by default
+    if (!signed) {
+        return v >>> 0;
+    }
+
     if (n === 4) return v | 0;
     
     const bits = n * 8;
     const sign = 1 << (bits - 1);
-    if (v & sign) v = v - (1 << bits); // two's complement adjust
+    if (v & sign) v = v - (1 << bits); // two's complement
     return v;
 }
 

@@ -3047,11 +3047,11 @@ function handleMainItem(bTag, bSize, bytes, i, opts, indent) {
     }
 }
 
-function extractValue(name, bytes, i, nBytes) {
+function extractValue(name, bytes, i, nBytes, signed = 1) {
     if (nBytes <= 0) {
         throw errDataExpected(name);
     }
-    const val = readIntLE(bytes, i, nBytes);
+    const val = readIntLE(bytes, i, nBytes, signed);
     if (val === undefined) {
         throw errUnexpectedEnd(name, nBytes);
     }
@@ -3063,8 +3063,8 @@ function handleGlobalItem(bTag, bSize, bytes, i, opts) {
     const nBytes = (bSize === 3) ? 4 : (bSize ? bSize : 0);
     switch (bTag) {
         case 0x00: { // Usage Page
-            const val = extractValue("Usage Page", bytes, i + 1, nBytes);
-            const comment = `Usage Page (${usagePages[val] || "Vendor-defined(0x" + (val !== undefined ? val.toString(16) : "?") + ")"})`;
+            const val = extractValue("Usage Page", bytes, i + 1, nBytes, false);
+            const comment = `Usage Page (${usagePages[val] || "Vendor Defined 0x" + (val !== undefined ? val.toString(16).toUpperCase() : "?")})`;
             const line = joinHex(b, val, opts, nBytes);
             return { text: line, comment, advance: 1 + nBytes, indentChange: 0, usagePage: val };
         }
@@ -3152,7 +3152,7 @@ function handleLocalItem(bTag, bSize, bytes, i, opts, usagePage) {
     const nBytes = (bSize === 3) ? 4 : (bSize ? bSize : 0);
     switch (bTag) {
         case 0x00: { // Usage
-            const val = extractValue("Usage", bytes, i + 1, nBytes);
+            const val = extractValue("Usage", bytes, i + 1, nBytes, false);
             const comment = `Usage (${getUsage(usagePage, val) || joinHex(null, val, opts, nBytes)})`;
             const line = joinHex(b, val, opts, nBytes);
             return { text: line, comment, advance: 1 + nBytes, indentChange: 0 };
