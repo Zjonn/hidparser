@@ -2986,19 +2986,23 @@ function getUsage(usagePage, usageId) {
 }
 
 function handleParts(byte, is_input) {
-    let res = (byte & 0x01) ? "Cons" : "Data";
-    res += "," + ((byte & 0x02) ? "Arr" : "Var");
-    res += "," + ((byte & 0x04) ? "Abs" : "Rel");
-    res += "," + ((byte & 0x08) ? "NWrap" : "Wrap");
-    res += "," + ((byte & 0x10) ? "Lin" : "NLin");
-    res += "," + ((byte & 0x20) ? "PrefState" : "NPrefState");
-    res += "," + ((byte & 0x40) ? "NNull" : "Null");
-    if (!is_input) {
-        res += "," + ((byte & 0x40) ? "NVol" : "Vol");
-    }
-    res += "," + ((byte & 0x80) ? "BitField" : "BuffBytes");
+    const parts = [];
 
-    return res;
+    parts.push((byte & 0x01) ? "Constant" : "Data");
+    parts.push((byte & 0x02) ? "Variable" : "Array");
+    parts.push((byte & 0x04) ? "Relative" : "Absolute");
+    parts.push((byte & 0x08) ? "Wrap" : "No Wrap");
+    parts.push((byte & 0x10) ? "Non Linear" : "Linear");
+    parts.push((byte & 0x20) ? "No Preferred" : "Preferred State");
+    parts.push((byte & 0x40) ? "Null state" : "No Null position");
+
+    if (!is_input) {
+        parts.push((byte & 0x80) ? "Volatile" : "Non Volatile");
+    }
+
+    parts.push((byte & 0x010) ? "Buffered Bytes" : "Bit Field");
+
+    return parts.join(",");
 }
 
 function handleMainItem(bTag, bSize, bytes, i, opts, indent) {
