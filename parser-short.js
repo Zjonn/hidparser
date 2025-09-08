@@ -3003,56 +3003,39 @@ function handleParts(byte, is_input) {
 
 function handleMainItem(bTag, bSize, bytes, i, opts, indent) {
     const b = bytes[i];
+    const nBytes = (bSize === 3) ? 4 : (bSize ? bSize : 0);
     switch (bTag) {
-        case 0xA: { // Collection (1-byte arg)
-            if (bSize !== 1) {
-                throw new Error("Collection (1-byte arg) expected");
-            }
-
-            const val = bytes[i + 1];
+        case 0xA: { // Collection
+            const val = extractValue("Collection", bytes, i + 1, nBytes);
             const comment = `Collection (${collectionTypes[val] || val})`;
             const line = joinHex(b, val, opts, 1);
-            return { text: line, comment, advance: 2, indentChange: 1 };
-
+            return { text: line, comment, advance: 1 + nBytes, indentChange: 1 };
         }
         case 0xC: { // End Collection
-            if (bSize !== 0) {
-                throw new Error("End Collection (0-byte arg) expected");
+            if (nBytes !== 0) {
+                throw new Error(`End Collection: (0-byte arg) expected`);
             }
-
             const comment = "End Collection";
             const line = joinHex(b, null, opts, 0) + ",";
             return { text: line, comment, advance: 1, indentChange: -1 };
         }
-        case 0x8: { // Input (1 byte)
-            if (bSize !== 1) {
-                throw new Error("Input (1-byte arg) expected");
-            }
-
-            const val = bytes[i + 1];
+        case 0x8: { // Input
+            const val = extractValue("Input", bytes, i + 1, nBytes);
             const comment = `Input (${typeof val === 'number' ? handleParts(val, true) : 'no-data'})`;
             const line = joinHex(b, val, opts, 1);
-            return { text: line, comment, advance: 2, indentChange: 0 };
+            return { text: line, comment, advance: 1 + nBytes, indentChange: 0 };
         }
-        case 0x9: { // Output (1 byte)
-            if (bSize !== 1) {
-                throw new Error("Output (1-byte arg) expected");
-            }
-
-            const val = bytes[i + 1];
+        case 0x9: { // Output
+            const val = extractValue("Output", bytes, i + 1, nBytes);
             const comment = `Output (${typeof val === 'number' ? handleParts(val, false) : 'no-data'})`;
             const line = joinHex(b, val, opts, 1);
-            return { text: line, comment, advance: 2, indentChange: 0 };
+            return { text: line, comment, advance: 1 + nBytes, indentChange: 0 };
         }
-        case 0xB: { // Feature (1 byte)
-            if (bSize !== 1) {
-                throw new Error("Feature (1-byte arg) expected");
-            }
-
-            const val = bytes[i + 1];
+        case 0xB: { // Feature
+            const val = extractValue("Feature", bytes, i + 1, nBytes);
             const comment = `Feature (${typeof val === 'number' ? handleParts(val, false) : 'no-data'})`;
             const line = joinHex(b, val, opts, 1);
-            return { text: line, comment, advance: 2, indentChange: 0 };
+            return { text: line, comment, advance: 1 + nBytes, indentChange: 0 };
         }
         default: {
             throw new Error(`Unknown Main Item (tag 0x${bTag.toString(16)})`);
