@@ -14,8 +14,8 @@ export function joinHex(tag, data, opts, nBytes) {
         const byte = (data >>> (i * 8)) & 0xFF;
         result.push(toHex(byte, opts));
     }
-    
-    return result.join(sep);
+
+    return result.join(sep) + sep;
 }
 
 export function readIntLE(bytes, offset, n, signed = true) {
