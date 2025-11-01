@@ -3,7 +3,7 @@ import { handleLongItem } from "./parser-long.js";
 
 
 // hid1_11.pdf 6.2.2 Report Descriptor
-function parseDescriptor(bytes, opts) {
+export function parseDescriptor(bytes, opts) {
     let output = "";
     let indent = 0;
     let usagePage = null;
@@ -39,24 +39,40 @@ function parseDescriptor(bytes, opts) {
     return output;
 }
 
-function stripComments(input) {
+export function stripComments(input) {
     input = input.replace(/\/\*[\s\S]*?\*\//g, "");
     input = input.replace(/\/\/.*$/gm, "");
     input = input.replace(/#.*$/gm, "");
     return input;
 }
 
-document.getElementById("parseBtn").addEventListener("click", () => {
-    let input = document.getElementById("descriptorInput").value.trim();
-    input = stripComments(input);
+if (typeof document !== "undefined") {
+    const parseBtn = document.getElementById("parseBtn");
+    if (parseBtn) {
+        parseBtn.addEventListener("click", () => {
+            const inputField = document.getElementById("descriptorInput");
+            if (!inputField) {
+                return;
+            }
 
-    const bytes = input.split(/[\s,]+/).map(b => parseInt(b, 16)).filter(n => !isNaN(n));
-    const opts = {
-        separator: document.getElementById("separator").value || ",",
-        prefix: document.getElementById("prefix").value || "0x",
-        comment: document.getElementById("commentSymbol").value || "//",
-    };
+            let input = inputField.value.trim();
+            input = stripComments(input);
 
-    const parsed = parseDescriptor(bytes, opts);
-    document.getElementById("output").textContent = parsed;
-});
+            const bytes = input
+                .split(/[\s,]+/)
+                .map(b => parseInt(b, 16))
+                .filter(n => !isNaN(n));
+            const opts = {
+                separator: (document.getElementById("separator")?.value) || ",",
+                prefix: (document.getElementById("prefix")?.value) || "0x",
+                comment: (document.getElementById("commentSymbol")?.value) || "//",
+            };
+
+            const parsed = parseDescriptor(bytes, opts);
+            const outputEl = document.getElementById("output");
+            if (outputEl) {
+                outputEl.textContent = parsed;
+            }
+        });
+    }
+}
