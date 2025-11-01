@@ -3,6 +3,14 @@ import assert from 'node:assert/strict';
 import { parseDescriptor, stripComments } from '../parser.js';
 
 const defaultOpts = { separator: ',', prefix: '0x', comment: '//' };
+const simpleDescriptorBytes = [0x05, 0x01, 0x09, 0x02, 0xA1, 0x01, 0x81, 0x02, 0xC0];
+const simpleDescriptorOutput = [
+    '0x05,0x01,              // Usage Page (Generic Desktop Page)',
+    '0x09,0x02,              // Usage (Mouse)',
+    '0xA1,0x01,              // Collection (Application)',
+    '0x81,0x02,              //   Input (Data,Variable,Absolute,No Wrap,Linear,Preferred State,No Null position,Bit Field)',
+    '0xC0,                   //   End Collection',
+].join('\n') + '\n';
 
 test('stripComments removes C-style, C++-style and hash comments', () => {
     const input = `0x01, 0x02 // comment\n# another\n/* block\ncomment */\n0x03`;
@@ -19,17 +27,13 @@ test('stripComments removes C-style, C++-style and hash comments', () => {
 });
 
 test('parseDescriptor formats a simple descriptor with indentation', () => {
-    const bytes = [0x05, 0x01, 0x09, 0x02, 0xA1, 0x01, 0x81, 0x02, 0xC0];
-    const expected = [
-        '0x05,0x01,              // Usage Page (Generic Desktop Page)',
-        '0x09,0x02,              // Usage (Mouse)',
-        '0xA1,0x01,              // Collection (Application)',
-        '0x81,0x02,              //   Input (Data,Variable,Absolute,No Wrap,Linear,Preferred State,No Null position,Bit Field)',
-        '0xC0,,                  //   End Collection',
-    ].join('\n') + '\n';
+    const output = parseDescriptor(simpleDescriptorBytes, defaultOpts);
+    assert.strictEqual(output, simpleDescriptorOutput);
+});
 
-    const output = parseDescriptor(bytes, defaultOpts);
-    assert.strictEqual(output, expected);
+test('parseDescriptor falls back to default formatting options', () => {
+    const output = parseDescriptor(simpleDescriptorBytes);
+    assert.strictEqual(output, simpleDescriptorOutput);
 });
 
 test('parseDescriptor reports parsing errors in the output', () => {
