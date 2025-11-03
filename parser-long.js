@@ -9,7 +9,7 @@ function handleLongItem(bytes, i, opts) {
         return { text: "", comment: "ERROR: Unexpected end of data", advance: 1, error: true };
     }
 
-    const line = joinHex([b, bDataSize, bLongItemTag], opts);
+    const line = joinHex(null, [b, bDataSize, bLongItemTag], opts);
     return { text: line, comment: "Long Item", advance: 3, error: false };
 }
 

@@ -1,21 +1,44 @@
+const DEFAULT_OPTIONS = {
+    prefix: "0x",
+    separator: " ",
+};
+
+function normalizeOptions(opts = {}) {
+    return {
+        ...DEFAULT_OPTIONS,
+        ...opts,
+    };
+}
+
 export function toHex(val, opts) {
-    const prefix = opts.prefix || "0x";
+    const { prefix } = normalizeOptions(opts);
     return prefix + (val >>> 0).toString(16).padStart(2, "0").toUpperCase();
 }
 
-export function joinHex(tag, data, opts, nBytes) {
-    const sep = opts.separator || " ";
+export function joinHex(tag, data, opts, nBytes = 0) {
+    const options = normalizeOptions(opts);
     const result = [];
-    
-    if(tag !== null)
-        result.push(toHex(tag & 0xFF, opts));
-    
-    for (let i = 0; i < nBytes; i++) {
-        const byte = (data >>> (i * 8)) & 0xFF;
-        result.push(toHex(byte, opts));
+
+    if (Array.isArray(tag)) {
+        for (const value of tag) {
+            result.push(toHex(value & 0xFF, options));
+        }
+    } else if (tag !== null && tag !== undefined) {
+        result.push(toHex(tag & 0xFF, options));
     }
 
-    return result.join(sep) + sep;
+    if (Array.isArray(data)) {
+        for (const value of data) {
+            result.push(toHex(value & 0xFF, options));
+        }
+    } else if (nBytes && data != null) {
+        for (let i = 0; i < nBytes; i++) {
+            const byte = (data >>> (i * 8)) & 0xFF;
+            result.push(toHex(byte, options));
+        }
+    }
+
+    return result.join(options.separator) + options.separator;
 }
 
 export function readIntLE(bytes, offset, n, signed = true) {

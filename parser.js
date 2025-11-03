@@ -1,9 +1,15 @@
 import { handleShortItem } from "./parser-short.js";
 import { handleLongItem } from "./parser-long.js";
 
-
 // hid1_11.pdf 6.2.2 Report Descriptor
-function parseDescriptor(bytes, opts) {
+const DEFAULT_PARSE_OPTIONS = {
+    separator: ",",
+    prefix: "0x",
+    comment: "//",
+};
+
+export function parseDescriptor(bytes, opts = {}) {
+    const options = { ...DEFAULT_PARSE_OPTIONS, ...opts };
     let output = "";
     let indent = 0;
     let usagePage = null;
@@ -15,23 +21,23 @@ function parseDescriptor(bytes, opts) {
         try {
             // Long item
             if (b == 0xFE) {
-                result = handleLongItem(bytes, i, opts);
+                result = handleLongItem(bytes, i, options);
             } else {
-                result = handleShortItem(bytes, i, opts, indent, usagePage);
+                result = handleShortItem(bytes, i, options, indent, usagePage);
             }
         } catch (error) {
             console.error("Error processing byte:", b, error);
-            output += `${opts.comment} ERROR: ${error.message}\n`;
+            output += `${options.comment} ERROR: ${error.message}\n`;
             break;
         }
 
         if (result.usagePage) {
             usagePage = result.usagePage;
         }
-        
+
         const spaces = " ".repeat(indent * 2);
         const pad = " ".repeat(Math.max(0, maxLineLength - result.text.length));
-        output += `${result.text}${pad}${opts.comment} ${spaces}${result.comment}\n`;
+        output += `${result.text}${pad}${options.comment} ${spaces}${result.comment}\n`;
         indent += result.indentChange;
         i += result.advance;
     }
@@ -39,24 +45,40 @@ function parseDescriptor(bytes, opts) {
     return output;
 }
 
-function stripComments(input) {
+export function stripComments(input) {
     input = input.replace(/\/\*[\s\S]*?\*\//g, "");
     input = input.replace(/\/\/.*$/gm, "");
     input = input.replace(/#.*$/gm, "");
     return input;
 }
 
-document.getElementById("parseBtn").addEventListener("click", () => {
-    let input = document.getElementById("descriptorInput").value.trim();
-    input = stripComments(input);
+if (typeof document !== "undefined") {
+    const parseBtn = document.getElementById("parseBtn");
+    if (parseBtn) {
+        parseBtn.addEventListener("click", () => {
+            const inputField = document.getElementById("descriptorInput");
+            if (!inputField) {
+                return;
+            }
 
-    const bytes = input.split(/[\s,]+/).map(b => parseInt(b, 16)).filter(n => !isNaN(n));
-    const opts = {
-        separator: document.getElementById("separator").value || ",",
-        prefix: document.getElementById("prefix").value || "0x",
-        comment: document.getElementById("commentSymbol").value || "//",
-    };
+            let input = inputField.value.trim();
+            input = stripComments(input);
 
-    const parsed = parseDescriptor(bytes, opts);
-    document.getElementById("output").textContent = parsed;
-});
+            const bytes = input
+                .split(/[\s,]+/)
+                .map(b => parseInt(b, 16))
+                .filter(n => !isNaN(n));
+            const opts = {
+                separator: (document.getElementById("separator")?.value) || ",",
+                prefix: (document.getElementById("prefix")?.value) || "0x",
+                comment: (document.getElementById("commentSymbol")?.value) || "//",
+            };
+
+            const parsed = parseDescriptor(bytes, opts);
+            const outputEl = document.getElementById("output");
+            if (outputEl) {
+                outputEl.textContent = parsed;
+            }
+        });
+    }
+}

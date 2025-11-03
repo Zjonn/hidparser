@@ -3020,7 +3020,7 @@ function handleMainItem(bTag, bSize, bytes, i, opts, indent) {
                 throw new Error(`End Collection: (0-byte arg) expected`);
             }
             const comment = "End Collection";
-            const line = joinHex(b, null, opts, 0) + ",";
+            const line = joinHex(b, null, opts, 0);
             return { text: line, comment, advance: 1, indentChange: -1 };
         }
         case 0x8: { // Input
@@ -3130,7 +3130,7 @@ function handleGlobalItem(bTag, bSize, bytes, i, opts) {
                 throw new Error(`Push: (0-byte arg) expected`);
             }
             const comment = "Push";
-            const line = joinHex([b], null, opts, 0) + ",";
+            const line = joinHex(b, null, opts, 0);
             return { text: line, comment, advance: 1, indentChange: 0 };
         }
         case 0xB0: { // Pop (0 bytes)
@@ -3138,7 +3138,7 @@ function handleGlobalItem(bTag, bSize, bytes, i, opts) {
                 throw new Error(`Pop: (0-byte arg) expected`);
             }
             const comment = "Pop";
-            const line = joinHex([b], null, opts, 0) + ",";
+            const line = joinHex(b, null, opts, 0);
             return { text: line, comment, advance: 1, indentChange: 0 };
         }
         default: {
@@ -3232,7 +3232,7 @@ function handleShortItem(bytes, i, opts, indent, usagePage) {
             return handleLocalItem(bTag, bSize, bytes, i, opts, usagePage);
         default:
             const comment = `Unknown (${toHex(b, opts)})`;
-            const line = joinHex([b], opts) + ",";
+            const line = joinHex(b, null, opts, 0);
             return { text: line, comment, advance: 1, indentChange: 0, error: true };
     }
 }
