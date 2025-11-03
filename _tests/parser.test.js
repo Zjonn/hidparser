@@ -12,6 +12,14 @@ const simpleDescriptorOutput = [
     '0xC0,                   //   End Collection',
 ].join('\n') + '\n';
 
+const noSeparatorDescriptorOutput = [
+    '\\x05\\x01' + ' '.repeat(16) + '// Usage Page (Generic Desktop Page)',
+    '\\x09\\x02' + ' '.repeat(16) + '// Usage (Mouse)',
+    '\\xA1\\x01' + ' '.repeat(16) + '// Collection (Application)',
+    '\\x81\\x02' + ' '.repeat(16) + '//   Input (Data,Variable,Absolute,No Wrap,Linear,Preferred State,No Null position,Bit Field)',
+    '\\xC0' + ' '.repeat(20) + '//   End Collection',
+].join('\n') + '\n';
+
 test('stripComments removes C-style, C++-style and hash comments', () => {
     const input = `0x01, 0x02 // comment\n# another\n/* block\ncomment */\n0x03`;
     const result = stripComments(input);
@@ -34,6 +42,11 @@ test('parseDescriptor formats a simple descriptor with indentation', () => {
 test('parseDescriptor falls back to default formatting options', () => {
     const output = parseDescriptor(simpleDescriptorBytes);
     assert.strictEqual(output, simpleDescriptorOutput);
+});
+
+test('parseDescriptor supports empty string separator', () => {
+    const output = parseDescriptor(simpleDescriptorBytes, { separator: '', prefix: '\\x' });
+    assert.strictEqual(output, noSeparatorDescriptorOutput);
 });
 
 test('parseDescriptor reports parsing errors in the output', () => {

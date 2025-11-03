@@ -68,10 +68,14 @@ if (typeof document !== "undefined") {
                 .split(/[\s,]+/)
                 .map(b => parseInt(b, 16))
                 .filter(n => !isNaN(n));
+            const separatorInput = document.getElementById("separator");
+            const prefixInput = document.getElementById("prefix");
+            const commentInput = document.getElementById("commentSymbol");
+
             const opts = {
-                separator: (document.getElementById("separator")?.value) || ",",
-                prefix: (document.getElementById("prefix")?.value) || "0x",
-                comment: (document.getElementById("commentSymbol")?.value) || "//",
+                separator: separatorInput?.value ?? ",",
+                prefix: prefixInput?.value ?? "0x",
+                comment: commentInput?.value ?? "//",
             };
 
             const parsed = parseDescriptor(bytes, opts);
