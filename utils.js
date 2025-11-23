@@ -41,6 +41,21 @@ export function joinHex(tag, data, opts, nBytes = 0) {
     return result.join(options.separator) + options.separator;
 }
 
+export function formatByteSequence(data, opts) {
+    const options = normalizeOptions(opts);
+    if (!Array.isArray(data) || data.length === 0) {
+        return "";
+    }
+
+    const separator = options.separator === "," ? ", " : options.separator;
+    const values = [];
+    for (const value of data) {
+        values.push(toHex(value & 0xFF, options));
+    }
+
+    return values.join(separator);
+}
+
 export function readIntLE(bytes, offset, n, signed = true) {
     if (!n || n <= 0) return undefined;
 
