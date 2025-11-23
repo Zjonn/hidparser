@@ -3064,7 +3064,11 @@ function handleGlobalItem(bTag, bSize, bytes, i, opts) {
     switch (bTag) {
         case 0x00: { // Usage Page
             const val = extractValue("Usage Page", bytes, i + 1, nBytes, false);
-            const comment = `Usage Page (${usagePages[val] || "Vendor Defined 0x" + (val !== undefined ? val.toString(16).toUpperCase() : "?")})`;
+            const rawBytes = bytes.slice(i + 1, i + 1 + nBytes);
+            const fallbackPrefix = opts?.prefix ?? "0x";
+            const vendorValue = formatByteSequence(rawBytes, opts) || (val !== undefined ? `${fallbackPrefix}${val.toString(16).toUpperCase()}` : "?");
+            const commentValue = usagePages[val] || `Vendor Defined ${vendorValue}`;
+            const comment = `Usage Page (${commentValue})`;
             const line = joinHex(b, val, opts, nBytes);
             return { text: line, comment, advance: 1 + nBytes, indentChange: 0, usagePage: val };
         }
