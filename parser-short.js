@@ -3066,7 +3066,16 @@ function handleGlobalItem(bTag, bSize, bytes, i, opts) {
             const val = extractValue("Usage Page", bytes, i + 1, nBytes, false);
             const rawBytes = bytes.slice(i + 1, i + 1 + nBytes);
             const fallback = formatByteSequence(rawBytes, opts);
-            const commentValue = usagePages[val] || fallback || "?";
+            let commentValue = usagePages[val];
+            if (!commentValue) {
+                if (fallback) {
+                    commentValue = `Vendor Defined ${fallback}`;
+                } else if (val !== undefined) {
+                    commentValue = `Vendor Defined 0x${val.toString(16).toUpperCase()}`;
+                } else {
+                    commentValue = "?";
+                }
+            }
             const comment = `Usage Page (${commentValue})`;
             const line = joinHex(b, val, opts, nBytes);
             return { text: line, comment, advance: 1 + nBytes, indentChange: 0, usagePage: val };
@@ -3156,10 +3165,8 @@ function handleLocalItem(bTag, bSize, bytes, i, opts, usagePage) {
     switch (bTag) {
         case 0x00: { // Usage
             const val = extractValue("Usage", bytes, i + 1, nBytes, false);
-            const usageName = getUsage(usagePage, val);
             const rawBytes = bytes.slice(i + 1, i + 1 + nBytes);
-            const fallback = formatByteSequence(rawBytes, opts);
-            const commentValue = usageName || fallback;
+            const commentValue = getUsage(usagePage, val) || formatByteSequence(rawBytes, opts) || "?";
             const comment = `Usage (${commentValue})`;
             const line = joinHex(b, val, opts, nBytes);
             return { text: line, comment, advance: 1 + nBytes, indentChange: 0 };

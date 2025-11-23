@@ -58,7 +58,7 @@ test('parseDescriptor prints multi-byte usage bytes when unknown', () => {
 test('parseDescriptor prints multi-byte usage page bytes when unknown', () => {
     const descriptor = [0x06, 0xFF, 0x00];
     const output = parseDescriptor(descriptor, defaultOpts);
-    assert.ok(output.includes('Usage Page (0xFF,0x00)'));
+    assert.ok(output.includes('Usage Page (Vendor Defined 0xFF,0x00)'));
 });
 
 test('parseDescriptor reports parsing errors in the output', () => {
