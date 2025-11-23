@@ -1,5 +1,6 @@
 import { handleShortItem } from "./parser-short.js";
 import { handleLongItem } from "./parser-long.js";
+import { formatByteSequence } from "./utils.js";
 
 // hid1_11.pdf 6.2.2 Report Descriptor
 const DEFAULT_PARSE_OPTIONS = {
@@ -17,6 +18,8 @@ export function parseDescriptor(bytes, opts = {}) {
 
     for (let i = 0; i < bytes.length;) {
         const b = bytes[i];
+        const bType = (b >> 2) & 0x03;
+        const bTag = (b >> 4) & 0x0F;
         let result = null;
         try {
             // Long item
@@ -29,6 +32,17 @@ export function parseDescriptor(bytes, opts = {}) {
             console.error("Error processing byte:", b, error);
             output += `${options.comment} ERROR: ${error.message}\n`;
             break;
+        }
+
+        if (bType === 1 && bTag === 0x00 && result?.comment?.includes("Vendor Defined")) {
+            const dataLength = Math.max(0, result.advance - 1);
+            if (dataLength > 1) {
+                const rawBytes = bytes.slice(i + 1, i + 1 + dataLength);
+                const formatted = formatByteSequence(rawBytes, options);
+                if (formatted) {
+                    result.comment = result.comment.replace(/Vendor Defined\s+0x[0-9A-F?]+/i, `Vendor Defined ${formatted}`);
+                }
+            }
         }
 
         if (result.usagePage) {
