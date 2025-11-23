@@ -47,12 +47,13 @@ export function formatByteSequence(data, opts) {
         return "";
     }
 
+    const separator = options.separator === "," ? ", " : options.separator;
     const values = [];
     for (const value of data) {
         values.push(toHex(value & 0xFF, options));
     }
 
-    return values.join(options.separator);
+    return values.join(separator);
 }
 
 export function readIntLE(bytes, offset, n, signed = true) {
