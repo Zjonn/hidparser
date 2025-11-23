@@ -3068,13 +3068,8 @@ function handleGlobalItem(bTag, bSize, bytes, i, opts) {
             const fallback = formatByteSequence(rawBytes, opts);
             let commentValue = usagePages[val];
             if (!commentValue) {
-                if (fallback) {
-                    commentValue = `Vendor Defined ${fallback}`;
-                } else if (val !== undefined) {
-                    commentValue = `Vendor Defined 0x${val.toString(16).toUpperCase()}`;
-                } else {
-                    commentValue = "?";
-                }
+                const suffix = fallback || (val !== undefined ? `0x${val.toString(16).toUpperCase()}` : "?");
+                commentValue = `Vendor Defined ${suffix}`;
             }
             const comment = `Usage Page (${commentValue})`;
             const line = joinHex(b, val, opts, nBytes);
