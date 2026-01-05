@@ -15,87 +15,194 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>HID Report Descriptor Parser</h1>
+    <header class="app-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <svg class="app-logo" viewBox="0 0 100 100" fill="none" width="32" height="32">
+                    <!-- Background Circle -->
+                    <circle cx="50" cy="50" r="45" fill="currentColor" class="logo-bg"/>
+                    <!-- USB Trident Symbol -->
+                    <g stroke="var(--surface-color)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M50 80 V 45"/>
+                        <path d="M50 60 L 30 40 V 30"/>
+                        <circle cx="30" cy="24" r="5" fill="var(--surface-color)" stroke="none"/>
+                        <path d="M50 60 L 70 40 V 30"/>
+                        <rect x="66" y="20" width="8" height="8" fill="var(--surface-color)" stroke="none"/>
+                        <path d="M50 45 L 50 25"/>
+                        <path d="M50 20 L 44 30 H 56 Z" fill="var(--surface-color)" stroke="none"/>
+                    </g>
+                </svg>
+                <h1>HID Report Descriptor Parser</h1>
+            </div>
+            <button id="themeToggle" class="btn btn-icon" aria-label="Toggle Dark Mode" title="Toggle Dark Mode">
+                <!-- Sun Icon -->
+                <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <!-- Moon Icon -->
+                <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+        </div>
     </header>
 
-    <main class="container">
-        <!-- Input card -->
-        <section class="card">
-            <h2>Input</h2>
-            <textarea id="descriptorInput" 
-    placeholder="Paste HID Report Descriptor bytes (hex format):
+    <main class="app-main">
+        <div class="parser-grid">
+            <!-- Left Column: Input & Controls -->
+            <div class="column left-column">
+                <section class="panel input-panel">
+                    <div class="panel-header">
+                        <h2>Input</h2>
+                        <span class="panel-subtitle">Paste hex bytes below</span>
+                    </div>
+                    <textarea id="descriptorInput" spellcheck="false" placeholder="Example: 05 01 09 02 A1 01 ...
+                    
+Supports:
+- Hex bytes (00-FF)
+- 0x prefix optional
+- Comments (//, #, /* */)"></textarea>
+                    
+                    <div class="controls-area">
+                        <button id="parseBtn" class="btn btn-primary">Parse Descriptor</button>
+                        <button id="toggleOptions" class="btn btn-icon" aria-label="Settings" title="Parser Settings">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                            </svg>
+                        </button>
+                    </div>
 
-Format:
-- Hex bytes (00-FF), space or comma separated
-- Comments (ignored): // single line, /* multi-line */, # shell-style
-- Case insensitive (0x05 or 0X05 or 0x0f)
-- Leading 0x is optional
-
-Example of valid input:
-05, 01, 09, 02, A1, 01
-09 01 A1 00     
-05 09 19 01 29 0x03  
-15 00 25 01        # This is different comment style
-95 03 75 01 81 02 // This is a comment
-95 01 75 05 81 03 
-...                // (rest omitted for brevity)
-
-Translates to:
-0x05, 0x01,             // Usage Page (Generic Desktop Page)
-0x09, 0x02,             // Usage (Mouse)
-0xA1, 0x01,             // Collection (Application)
-0x09, 0x01,             //   Usage (Pointer)
-0xA1, 0x00,             //   Collection (Physical)
-0x05, 0x09,             //     Usage Page (Button Page)
-0x19, 0x01,             //     Usage Minimum (1)
-0x29, 0x03,             //     Usage Maximum (3)
-0x15, 0x00,             //     Logical Minimum (0)
-0x25, 0x01,             //     Logical Maximum (1)
-0x95, 0x03,             //     Report Count (3)
-0x75, 0x01,             //     Report Size (1)
-0x81, 0x02,             //     Input (Data,Variable,Absolute,No Wrap,Linear,Preferred State,No Null position,Bit Field)
-0x95, 0x01,             //     Report Count (1)
-0x75, 0x05,             //     Report Size (5)
-0x81, 0x03,             //     Input (Constant,Variable,Absolute,No Wrap,Linear,Preferred State,No Null position,Bit Field)
-"></textarea>
-        </section>
-
-        <!-- Options card -->
-        <section class="card options-card">
-            <div class="options-header" style="display: flex; align-items: center; gap: 8px;">
-                <button id="parseBtn">Parse</button>
-                <button id="toggleOptions">⚙️</button>
+                    <div id="optionsContent" class="options-drawer hidden">
+                        <div class="option-group">
+                            <label for="separator">Separator</label>
+                            <input type="text" id="separator" value=", " maxlength="2">
+                        </div>
+                        <div class="option-group">
+                            <label for="prefix">Prefix</label>
+                            <input type="text" id="prefix" value="0x" maxlength="4">
+                        </div>
+                        <div class="option-group">
+                            <label for="commentSymbol">Comment</label>
+                            <input type="text" id="commentSymbol" value="//" maxlength="4">
+                        </div>
+                    </div>
+                </section>
             </div>
-            <div id="optionsContent" class="options-content hidden">
-                <label>
-                    Separator:
-                    <input type="text" id="separator" value=", " maxlength="2">
-                </label>
-                <label>
-                    Prefix:
-                    <input type="text" id="prefix" value="0x" maxlength="4">
-                </label>
-                <label>
-                    Comment symbol:
-                    <input type="text" id="commentSymbol" value="//" maxlength="4">
-                </label>
-            </div>
-        </section>
 
-        <!-- Output card -->
-        <section class="card">
-            <h2>Output</h2>
-            <pre id="output"></pre>
-        </section>
+            <!-- Right Column: Output -->
+            <div class="column right-column">
+                <section class="panel output-panel">
+                    <div class="panel-header">
+                        <h2>Parsed Output</h2>
+                    </div>
+                    <div class="output-container">
+                        <pre id="output" placeholder="Parsed result will appear here..."></pre>
+                    </div>
+                </section>
+            </div>
+        </div>
     </main>
+
+    <footer class="app-footer">
+        <div class="footer-container">
+            <p>
+                HID Descriptor Parser
+                &bull;
+                <a href="https://github.com/zjonn/hidparser" target="_blank" rel="noopener noreferrer">
+                    View on GitHub
+                </a>
+                &bull;
+                <button id="privacyBtn" class="link-btn">Privacy & Cookies</button>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Privacy Modal -->
+    <div id="privacyModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Privacy & Cookies</h3>
+                <button id="closePrivacy" class="btn-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>This website does not use cookies for tracking purposes.</strong></p>
+                <p>We only use local storage to save your theme preference (Light/Dark mode) on your device. No personal data is collected or sent to any server.</p>
+                <p>The parsing logic runs entirely in your browser.</p>
+            </div>
+        </div>
+    </div>
 
     <script>
         const toggleBtn = document.getElementById('toggleOptions');
         const optionsContent = document.getElementById('optionsContent');
+        const themeToggle = document.getElementById('themeToggle');
+        const sunIcon = themeToggle.querySelector('.sun-icon');
+        const moonIcon = themeToggle.querySelector('.moon-icon');
+
+        // Modal Logic
+        const privacyBtn = document.getElementById('privacyBtn');
+        const privacyModal = document.getElementById('privacyModal');
+        const closePrivacy = document.getElementById('closePrivacy');
+
+        privacyBtn.addEventListener('click', () => {
+            privacyModal.classList.remove('hidden');
+        });
+
+        closePrivacy.addEventListener('click', () => {
+            privacyModal.classList.add('hidden');
+        });
+
+        privacyModal.addEventListener('click', (e) => {
+            if (e.target === privacyModal) {
+                privacyModal.classList.add('hidden');
+            }
+        });
+
+        // Theme Management
+        const getPreferredTheme = () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                return savedTheme;
+            }
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        };
+
+        const setTheme = (theme) => {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            if (theme === 'dark') {
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            } else {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            }
+        };
+
+        // Initialize theme
+        setTheme(getPreferredTheme());
+
+        // Theme toggle listener
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+        });
 
         toggleBtn.addEventListener('click', () => {
             optionsContent.classList.toggle('hidden');
+            toggleBtn.classList.toggle('active');
         });
     </script>
     <script type="module" src="parser.js"></script>
