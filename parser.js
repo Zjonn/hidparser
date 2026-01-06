@@ -85,4 +85,40 @@ if (typeof document !== "undefined") {
             }
         });
     }
+
+    // Copy to clipboard functionality
+    const copyBtn = document.getElementById("copyBtn");
+    const copyIcon = copyBtn?.querySelector(".copy-icon");
+    const checkIcon = copyBtn?.querySelector(".check-icon");
+
+    if (copyBtn && copyIcon && checkIcon) {
+        copyBtn.addEventListener("click", async () => {
+            const outputEl = document.getElementById("output");
+            if (!outputEl || !outputEl.textContent) return;
+
+            const text = outputEl.textContent;
+            let success = false;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                await navigator.clipboard.writeText(text);
+                success = true;
+            } else {
+                throw new Error("Clipboard API unavailable");
+            }
+
+            if (success) {
+                // Show check icon
+                copyIcon.style.display = "none";
+                checkIcon.style.display = "block";
+                copyBtn.classList.add("text-success");
+                
+                // Reset after 2 seconds
+                setTimeout(() => {
+                    copyIcon.style.display = "";
+                    checkIcon.style.display = "none";
+                    copyBtn.classList.remove("text-success");
+                }, 1000);
+            }
+        });
+    }
 }
