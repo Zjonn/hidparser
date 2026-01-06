@@ -45,13 +45,19 @@
     box-sizing: border-box;
 }
 
-body {
+html, body {
     margin: 0;
+    padding: 0;
     font-family: var(--font-ui);
     background-color: var(--bg-color);
     color: var(--text-primary);
     line-height: 1.5;
-    height: 100vh;
+    width: 100%;
+}
+
+body {
+    /* Default (Mobile): Allow full page scroll */
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
@@ -61,6 +67,7 @@ body {
     background: var(--surface-color);
     border-bottom: 1px solid var(--border-color);
     padding: var(--spacing-sm) var(--spacing-lg);
+    flex: 0 0 auto;
 }
 
 .header-container {
@@ -90,32 +97,20 @@ body {
 
 /* Main Layout */
 .app-main {
-    flex: 1;
+    flex: 1 1 auto;
     padding: var(--spacing-lg);
     max-width: 1600px;
     margin: 0 auto;
     width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .parser-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--spacing-lg);
-    height: 100%;
-}
-
-@media (min-width: 768px) {
-    .parser-grid {
-        grid-template-columns: 400px 1fr;
-        align-items: start;
-        height: calc(100vh - 100px); /* Subtract header + padding */
-    }
-    
-    .column {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-    }
+    /* Mobile: Default is auto height */
 }
 
 /* Panel Styling */
@@ -126,7 +121,6 @@ body {
     box-shadow: var(--shadow-sm);
     display: flex;
     flex-direction: column;
-    height: 100%;
     overflow: hidden;
 }
 
@@ -137,6 +131,7 @@ body {
     justify-content: space-between;
     align-items: baseline;
     background: var(--bg-color);
+    flex: 0 0 auto;
 }
 
 .panel-header h2 {
@@ -152,17 +147,19 @@ body {
 
 /* Input Area */
 .input-panel textarea {
-    flex: 1;
     width: 100%;
     border: none;
     padding: var(--spacing-md);
     font-family: var(--font-mono);
     font-size: 0.9rem;
-    resize: none;
     outline: none;
     background: var(--surface-color);
     color: var(--text-primary);
-    min-height: 200px;
+    
+    /* Mobile: Grow with content */
+    min-height: 250px;
+    field-sizing: content;
+    resize: vertical;
 }
 
 .input-panel textarea:focus {
@@ -177,6 +174,7 @@ body {
     gap: var(--spacing-sm);
     align-items: center;
     background: var(--bg-color);
+    flex: 0 0 auto;
 }
 
 /* Buttons */
@@ -226,6 +224,7 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--spacing-sm);
+    flex: 0 0 auto;
 }
 
 .options-drawer.hidden {
@@ -266,13 +265,19 @@ body {
 .output-panel {
     display: flex;
     flex-direction: column;
+    /* Important for Desktop Flex */
+    overflow: hidden; 
 }
 
 .output-container {
-    flex: 1;
-    overflow: hidden;
     position: relative;
     background: var(--code-bg);
+    min-height: 250px;
+    /* Mobile: Let it grow */
+    flex: 1 1 auto;
+    /* Important for scrolling inside */
+    display: flex;
+    flex-direction: column;
 }
 
 pre#output {
@@ -280,10 +285,13 @@ pre#output {
     padding: var(--spacing-lg);
     font-family: var(--font-mono);
     font-size: 0.9rem;
-    height: 100%;
-    overflow-y: auto;
     white-space: pre-wrap;
     color: var(--text-primary);
+    
+    /* Mobile: Grow with content */
+    height: auto;
+    overflow: visible; 
+    flex: 1 1 auto;
 }
 
 pre#output:empty::before {
@@ -300,6 +308,7 @@ pre#output:empty::before {
     text-align: center;
     font-size: 0.85rem;
     color: var(--text-secondary);
+    flex: 0 0 auto;
 }
 
 .app-footer a {
@@ -406,4 +415,83 @@ pre#output:empty::before {
 @keyframes fadeIn {
     from { opacity: 0; transform: scale(0.95); }
     to { opacity: 1; transform: scale(1); }
+}
+
+/* 
+   DESKTOP OVERRIDES 
+   Fixed App Layout for Main Content
+   Footer pushes below the viewport
+*/
+@media (min-width: 768px) {
+    /* Allow body to scroll so we can reach the footer */
+    html, body {
+        height: auto;
+        overflow-y: auto;
+    }
+
+    .app-main {
+        /* 
+           Set a fixed height that forces panels to scroll internally,
+           but large enough that footer is pushed down.
+           100vh - 50px creates a Main area that, combined with ~60px Header,
+           is slightly taller than 100vh, ensuring Footer is just off-screen.
+        */
+        height: calc(100vh - 50px);
+        min-height: 500px; /* Prevent being too small on short screens */
+        overflow: hidden;  /* Contain the panels */
+        padding-bottom: var(--spacing-lg);
+    }
+
+    .parser-grid {
+        grid-template-columns: 400px 1fr;
+        align-items: start;
+        height: 100%;
+        overflow: hidden;
+    }
+    
+    .column {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        min-height: 0; /* Crucial for flex child to shrink */
+    }
+
+    .panel {
+        height: 100%;
+        min-height: 0; /* Crucial for flex child to shrink */
+    }
+
+    /* Input Panel: Internal scrolling */
+    .input-panel textarea {
+        field-sizing: fixed;
+        flex: 1 1 auto;
+        height: 100%;
+        min-height: 0;
+        resize: none;
+        overflow-y: auto;
+    }
+
+    /* Output Panel: Internal scrolling */
+    .output-panel {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .output-container {
+        flex: 1 1 auto;
+        height: 100%;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    pre#output {
+        flex: 1 1 auto;
+        height: 100%;
+        min-height: 0; /* Important! Allows shrinking */
+        overflow-y: auto;
+        margin: 0;
+    }
 }
